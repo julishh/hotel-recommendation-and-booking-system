@@ -13,5 +13,3 @@ const NavigationBar = () => {
 
 export default NavigationBar
 
-//just trying to push
-//creating branch

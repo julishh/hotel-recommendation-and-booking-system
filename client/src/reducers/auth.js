@@ -1,5 +1,13 @@
+let userState
+if(window.localStorage.getItem('auth')){
+    userState=JSON.parse(window.localStorage.getItem('auth'))
+}else{
+    userState=null
+}
+
+
 export const authReducer=(
-    state={name:"juli",role:"seller"},
+    state=userState,
     action
 )=>{
     switch(action.type){

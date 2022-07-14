@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from 'react-toastify';
 
 import { useNavigate } from 'react-router-dom';
-  
+
 
 import axios from 'axios'
 
@@ -13,29 +13,29 @@ const Register = () => {
   const [password, setPassword] = useState("");
 
   const history = useNavigate();
-  
 
-  const handleSubmit = async(e) => {
+
+  const handleSubmit = async (e) => {
 
 
     e.preventDefault()
 
-    try{
-      const res=await axios.post(`${process.env.REACT_APP_API}/register`,{name,email,password})
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API}/register`, { name, email, password })
 
-      console.log("register user===>",res)
+      console.log("register user===>", res)
       toast.success("registering sucess,plase login")
       history('/login')
-      
 
-    }catch(err){
-      console.log("server error====>",err)
-      if(err.response.status==400)
-      toast.error(err.response.data)
+
+    } catch (err) {
+      console.log("server error====>", err)
+      if (err.response.status == 400)
+        toast.error(err.response.data)
     }
 
 
-    
+
   };
   const registerForm = () => {
     return (
@@ -72,7 +72,7 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></input>
         </div>
-          <button className="btn btn-primary"> submit</button>
+        <button disabled={!name ||!email || !password} className="btn btn-primary"> submit</button>
       </form>
     );
   };

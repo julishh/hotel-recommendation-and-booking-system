@@ -1,9 +1,9 @@
 import React from 'react'
 import { useSelector,useStore } from 'react-redux'
 const Home = () => {
-  const state=useSelector((state)=>state)
+  const {auth}=useSelector((state)=>state)
   return (
-    <div className='container-fluid h1 p-5 text-center'>Home page </div>
+    <div className='container-fluid h1 p-5 text-center'>Home page {JSON.stringify(auth)}</div>
   )
 }
 

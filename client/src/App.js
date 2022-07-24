@@ -10,6 +10,7 @@ import NavigationBar from "./components/NavigationBar";
 import Profile from "./user/Profile";
 import ProfileSeller from "./components/ProfileSeller";
 import NewHotel from "./hotels/NewHotel";
+import DisplaySingleHotel from "./hotels/DisplaySingleHotel";
 
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -19,6 +20,7 @@ function App() {
       <NavigationBar />
       <ToastContainer position="bottom-center"></ToastContainer>
       <Routes>
+        <Route exact path='/hotel/:h_id' element={<DisplaySingleHotel />}></Route>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />

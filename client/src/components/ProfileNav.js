@@ -13,6 +13,11 @@ const ProfileNav = () => {
                 <Link className={`nav-link ${active === '/profile/seller' && 'active'}`}
                  to='/profile/seller' > your hotels</Link>
             </li>
+
+            {/* <li className='nav-item'>
+                <Link className={`nav-link `}
+                 to='/newhotel/register' > register your hotels</Link>
+            </li> */}
         </ul>
     )
 }

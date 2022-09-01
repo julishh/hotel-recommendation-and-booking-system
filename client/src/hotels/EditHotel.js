@@ -1,44 +1,76 @@
-import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-//import Algoliaplaces from "algolia-places-react";
-import { useSelector } from "react-redux";
-
 import { DatePicker, Select } from "antd";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import "antd/dist/antd.css";
+//import { read } from "../actions/hotel";
+import axios from 'axios'
 
-import { createHotel } from "../actions/hotel";
-
-// const config={
-//   appId:process.env.REACT_APP_ALGOILA_APP_ID,
-//   apiKey:process.env.REACT_APP_ALGOILA_API_KEY,
-//   language:'en',
-//   countires:[]
-// }
 const { Option } = Select;
-const NewHotel = () => {
-const {auth}=useSelector((state)=>({...state}))
+
+const EditHotel = ( ) => {
+
+  const {auth}=useSelector((state)=>({...state}))
 const {token}=auth
+
 
   const [values, setValues] = useState({
     title: "",
     content: "",
     location: "",
-    image: "",
+   
     price: "",
     bed: "",
     from: "",
     to: "",
   });
 
-  const { title, content, location, image, price, bed, from, to } = values;
+  const [image,setImage]=useState("")
+
+  const { title, content, location,  price, bed, from, to } = values;
 
   const [preview, setPreview] = useState(
     "https:/abc.com/50x50.png?text=PREVIEW"
   );
 
-  const handleSubmit = async(e) => {
+  
+
+  const hotelId=useParams().hotelId
+  
+   useEffect(() => {
+   
+    
+    loadSellerhotel()
+    
+  }, []);
+
+  const loadSellerhotel=async()=>{
+    let res=await axios.get(`${process.env.REACT_APP_API}/hotel/${hotelId}`)
+
+    setValues({...values,...res.data})
+    setPreview(`${process.env.REACT_APP_API}/hotels/image/${res.data._id}`)
+    console.log(values)
+    
+  }
+
+  const updateHotel=async(data)=>{
+    
+    await axios.put(`${process.env.REACT_APP_API}/update-hotel/${hotelId}`,data,{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+  }
+
+  const handleImageChange = (e) => {
+    setPreview(URL.createObjectURL(e.target.files[0]));
+    setImage(e.target.files[0]);
+  };
+  const handleSubmit=async(e)=>{
 
     e.preventDefault()
     //console.log(values)
@@ -52,24 +84,20 @@ const {token}=auth
   hotelData.append("to",to);
   image && hotelData.append("image",image);
 
- 
-  console.log([...hotelData])
-  let res=await createHotel(token,hotelData)
-  console.log("hote create re",res)
-  toast("new hotel is posted")
-  setTimeout(()=>{window.location.reload()},1000)
-  };
+  try{
+    let res= await updateHotel(hotelData)
+    console.log('hotel update response',res)
 
+  }catch(err){
+    console.log(err)
+  }
+  }
 
-  const handleImageChange = (e) => {
-    setPreview(URL.createObjectURL(e.target.files[0]));
-    setValues({ ...values, image: e.target.files[0] });
-  };
+  
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-
-  const hotelForm = () => (
+  const editHotelForm = () => (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="btn btn-outline-secondary btn-block m-2 text-left">
@@ -137,12 +165,14 @@ const {token}=auth
           className="w-100 m-2"
           size="large"
           placeholder="number of beds"
+          value={bed}
         >
           <Option key={1}>{1}</Option>
           <Option key={2}>{2}</Option>
           <Option key={3}>{3}</Option>
         </Select>
-        <DatePicker
+      {from && <DatePicker
+        defaultValue={moment(from,"YYYY-MM-DD")}
           placeholder="from date"
           className="form-control m-2"
           onChange={(date, dateString) =>
@@ -151,8 +181,9 @@ const {token}=auth
           disabledDate={(current) =>
             current && current.valueOf() < moment().subtract(1, "days")
           }
-        />
-        <DatePicker
+        />}
+        {to && <DatePicker
+        defaultValue={moment(to,"YYYY-MM-DD")}
           placeholder="to date"
           className="form-control m-2"
           onChange={(date, dateString) =>
@@ -162,23 +193,25 @@ const {token}=auth
         {(current) =>
           current && current.valueOf() < moment().subtract(1, "days")
         }
-        />
+        />}
         
       </div>
       <button className="btn btn-outline-primary m-2">save</button>
     </form>
   );
+  
 
   return (
     <>
       <div className="container-fluid navimage p-5 text-center">
-        <h1> NewHotel</h1>
+        <h1> Edit Hotel</h1>
+        
       </div>
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-10">
             <br />
-            {hotelForm()}
+            {editHotelForm()}
           </div>
           <div className="col-md-2">
             <img
@@ -194,4 +227,4 @@ const {token}=auth
   );
 };
 
-export default NewHotel;
+export default EditHotel;

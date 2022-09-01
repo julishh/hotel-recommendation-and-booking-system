@@ -3,7 +3,9 @@ const jwt=require('jsonwebtoken')
 
 
 const register=async(req,res)=>{
-console.log(req.body)
+
+try{
+  console.log(req.body)
 const {name,email,password}=req.body
 if(!name) return res.status(400).send("name is required")
 if(!password || password.length<4)
@@ -13,7 +15,6 @@ let userExist=await User.findOne({email}).exec()
 if(userExist) return res.status(400).send("user already exist")
 
 const user=new User(req.body)
-try{
   await user.save();
   console.log('user Created',user);
   return res.json({ok:true})
@@ -40,6 +41,7 @@ const login=async(req,res)=>{
       let token=jwt.sign({_id:user._id},process.env.JWT_SECRETE,{expiresIn:'7d'})
       res.json({token,user:{
         _id:user._id,
+        
         name:user.name,
         email:user.email
       }})

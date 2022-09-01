@@ -26,6 +26,12 @@ const userSchema=new Schema(
             required:"password is required",
 
         },
+
+        isSeller:{
+            type:Boolean,
+            default:false,
+        },
+        
         stripe_account_id:'',
         stripe_seller:{},
         stripeSession:{},

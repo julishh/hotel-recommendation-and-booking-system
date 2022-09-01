@@ -38,6 +38,10 @@ const hotelSchema = new Schema(
     bed: {
       type: Number,
     },
+    isbooked:{
+      type: Boolean,
+        default: false
+    },
   },
   { timestamps: true }
 );

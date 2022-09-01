@@ -15,3 +15,25 @@ code {
 .pointer{
   cursor: pointer;
 }
+
+.ant-modal-footer{
+  display: none;
+}
+.ant-select-selector{
+  height: 50px !important;
+}
+
+.ant-select-selection-placeholder,
+.ant-select-selection-item {
+margin-top:5px;
+}
+
+.btn-square{
+  border-radius:0;
+}
+.navimage{background-image:url("../../image/forproject.jpg");
+height: 100%;
+background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

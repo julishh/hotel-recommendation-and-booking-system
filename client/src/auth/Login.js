@@ -79,7 +79,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="container-fluid bg-secondary p-5 text-center ">
+      <div className="container-fluid bg-secondary p-5 text-center navimage ">
         <h1>Login</h1>
       </div>
       <div className="container">

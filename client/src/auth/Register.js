@@ -78,8 +78,8 @@ const Register = () => {
   };
 
   return (
-    <>
-      <div className="container-fluid bg-secondary p-5 text-center ">
+    <div  >
+      <div className="container-fluid bg-secondary p-5 text-center navimage ">
         <h1>Register</h1>
       </div>
       <div className="container">
@@ -87,7 +87,7 @@ const Register = () => {
           <div className="col-md-6 offset-md-3">{registerForm()}</div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -9,11 +9,16 @@ import Register from "./auth/Register";
 import NavigationBar from "./components/NavigationBar";
 import Profile from "./user/Profile";
 import ProfileSeller from "./components/ProfileSeller";
+import ProfileSSeller from "./user/ProfileSSeller";
 import NewHotel from "./hotels/NewHotel";
 import DisplaySingleHotel from "./hotels/DisplaySingleHotel";
+import EditHotel from "./hotels/EditHotel";
+import Hotelregister from "./components/Hotelregister";
+import SellerInfo from "./user/SellerInfo";
+import sellerProfile from "./pages/profile/sellerProfile";
 
 import PrivateRoute from "./components/PrivateRoute";
-
+import SearchResult from "./hotels/SearchResult";
 function App() {
   return (
     <BrowserRouter>
@@ -40,7 +45,7 @@ function App() {
           path="/profile/seller"
           element={
             <PrivateRoute>
-              <ProfileSeller />
+              <ProfileSSeller />
             </PrivateRoute>
           }
         />
@@ -53,6 +58,37 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          exact
+          path="/hotel/edit/:hotelId"
+          element={
+            <PrivateRoute>
+              <EditHotel />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          exact
+          path="/newhotel/register"
+          element={
+            <PrivateRoute>
+              <Hotelregister />
+            </PrivateRoute>
+          }
+        />
+       <Route
+          exact
+          path="/checkseller"
+          element={
+            <PrivateRoute>
+              <SellerInfo />
+            </PrivateRoute>
+          }
+        />
+
+<Route exact path="/search-result" element={<SearchResult />} />
+
       </Routes>
     </BrowserRouter>
   );

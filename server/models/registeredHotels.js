@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
+
 
 const { Schema } = mongoose;
 
@@ -31,13 +31,60 @@ const registeredHotelSchema = new Schema(
     location: {
       type: String,
     },
+    email:{
+      type:String,
+      trim:true,
+      required:"Email is required",
+      unique:true
 
-    registeredBy: {
-      type: ObjectId,
-      ref: "User",
-    },
+      
+  },
+
+    password:{
+
+      type:String,
+      trim:true,
+      required:"password is required",
+
+  },
+
+    isSeller:{
+      type:Boolean,
+      default:true,
+  },
+
   },
   { timestamps: true }
 );
+
+registeredHotelSchema.pre("save",function(next){
+  let hotel=this;
+  if(hotel.isModified('password')){
+      return bcrypt.hash(hotel.password,8,function(err,hash){
+          if(err){
+              console.log('BCRYPT HASH ERR',err);
+              return next(err)
+          }
+          hotel.password=hash;
+          return next()
+      })
+  }
+  else{
+      return next();
+  }
+})
+
+
+registeredHotelSchema.methods.comparePassword=function(password,next){
+  bcrypt.compare(password,this.password,function(err,match){
+      if(err){
+          console.log("compare password err",err)
+          return next(err,false)
+      }
+
+      console.log("match paasword",match)
+      return next(null,match)
+  })
+}
 
 module.exports = mongoose.model("RegisteredHotel", registeredHotelSchema);

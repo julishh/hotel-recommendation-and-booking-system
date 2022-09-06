@@ -1,11 +1,11 @@
 import React from 'react'
 import ProfileNav from "../../components/ProfileNav";
-import ProfileSSeler from "../../user/ProfileSSeller"
+import ProfileSSeller from "../../user/ProfileSSeller"
 const sellerProfile = () => {
   return (
     <div><ProfileNav />
          
-        <ProfileSSeler/>
+        <ProfileSSeller/>
         </div>
   )
 }

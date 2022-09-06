@@ -17,6 +17,8 @@ import Hotelregister from "./components/Hotelregister";
 import SellerInfo from "./user/SellerInfo";
 import sellerProfile from "./pages/profile/sellerProfile";
 
+import HotelLogin from "./auth/HotelLogin";
+import Ownerdashboard from "./hotelowner/Ownerdashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import SearchResult from "./hotels/SearchResult";
 function App() {
@@ -28,7 +30,10 @@ function App() {
         <Route exact path='/hotel/:h_id' element={<DisplaySingleHotel />}></Route>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
+        <Route exact path="/login/hotel" element={<HotelLogin />} />
+        
         <Route exact path="/register" element={<Register />} />
+        <Route exact path="/register/hotel" element={<Hotelregister />} />
 
         <Route
           exact
@@ -68,7 +73,7 @@ function App() {
           }
         />
 
-        <Route
+        {/* <Route
           exact
           path="/newhotel/register"
           element={
@@ -76,7 +81,7 @@ function App() {
               <Hotelregister />
             </PrivateRoute>
           }
-        />
+        /> */}
        <Route
           exact
           path="/checkseller"
@@ -86,6 +91,17 @@ function App() {
             </PrivateRoute>
           }
         />
+
+<Route
+          exact
+          path="/owner/dashboard"
+          element={
+            <PrivateRoute>
+              <Ownerdashboard/>
+            </PrivateRoute>
+          }
+        />
+        
 
 <Route exact path="/search-result" element={<SearchResult />} />
 

@@ -23,7 +23,7 @@ const hotelSchema = new Schema(
     },
     postedBy: {
       type: ObjectId,
-      ref: "User",
+      ref: "RegisteredHotel",
     },
     image: {
       data: Buffer,

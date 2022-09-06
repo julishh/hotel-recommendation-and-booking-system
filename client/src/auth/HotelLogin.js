@@ -1,56 +1,48 @@
 import React from "react";
 import { useState } from "react";
-import { toast } from 'react-toastify';
-import {useDispatch} from 'react-redux'
-import { useNavigate,Link } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { useNavigate,Link } from "react-router-dom";
 
+import axios from "axios";
 
-import axios from 'axios'
-
-const Login = () => {
-
+const HotelLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const history = useNavigate();
 
-
   const handleSubmit = async (e) => {
-
-
-    e.preventDefault()
-    console.log("sent data",email,password)
+    e.preventDefault();
+    console.log("sent data", email, password);
 
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API}/login`, { email, password })
+      const res = await axios.post(`${process.env.REACT_APP_API}/login/hotel`, {
+        email,
+        password,
+      });
 
-      console.log("login user===>", res)
-      if(res.data){
+      console.log("login user===>", res);
+      if (res.data) {
         //console.log(res.data)
-        window.localStorage.setItem('auth',JSON.stringify(res.data))
+        window.localStorage.setItem("auth", JSON.stringify(res.data));
         dispatch({
-          type:'LOGGEd_IN_USER',
-          payload:res.data
-        })
-        history('/')
+          type: "LOGGEd_IN_USER",
+          payload: res.data,
+        });
+        history("/owner/dashboard");
       }
-
     } catch (err) {
-      console.log("server error====>", err)
-      if (err.response.status == 400)
-        toast.error(err.response.data)
+      console.log("server error====>", err);
+      // if (err.response.status == 400)
+      //   toast.error(err.response.data)
     }
-
-
-
   };
+
   const loginForm = () => {
     return (
       <form onSubmit={handleSubmit} className="mt-5">
-
-
         <div className="form-group mb-3">
           <label className="form-label">your email</label>
           <input
@@ -72,8 +64,11 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></input>
         </div>
-        <button disabled={!email || !password} className="btn btn-primary"> submit</button>
-        <Link to='/login/hotel'><button className="btn btn-outline-primary m-2" >Login as Hotel</button>
+        <button disabled={!email || !password} className="btn btn-primary">
+          {" "}
+          submit
+        </button>
+        <Link to='/login'><button className="btn btn-outline-primary m-2" >Login as customer</button>
       </Link>
       </form>
     );
@@ -93,4 +88,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default HotelLogin;

@@ -67,7 +67,7 @@ const ProfileSSeller = () => {
       </div>
       <div className='container-fluid '>
 
-<ProfileNav />
+
       </div>
       {connected()}
       {/* <div className='container'>show all hotels i have posted</div> */}

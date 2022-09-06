@@ -1,58 +1,72 @@
+import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import { toast } from "react-toastify";
-//import Algoliaplaces from "algolia-places-react";
-import { useSelector } from "react-redux";
-import {registerHotel} from '../actions/hotel'
-import { DatePicker, Select } from "antd";
-import moment from "moment";
-import "antd/dist/antd.css";
-import ProfileNav from "./ProfileNav";
+import { Link, useNavigate } from "react-router-dom";
 
-// const config={
-//   appId:process.env.REACT_APP_ALGOILA_APP_ID,
-//   apiKey:process.env.REACT_APP_ALGOILA_API_KEY,
-//   language:'en',
-//   countires:[]
-// }
-const { Option } = Select;
+import { toast } from "react-toastify";
+// //import Algoliaplaces from "algolia-places-react";
+// import { useSelector } from "react-redux";
+// import {registerHotel} from '../actions/hotel'
+// import { DatePicker, Select } from "antd";
+// import moment from "moment";
+// import "antd/dist/antd.css";
+// import ProfileNav from "./ProfileNav";
+
+// const { Option } = Select;
+// const Hotelregister = () => {
+//   const { auth } = useSelector((state) => ({ ...state }));
+//   const { token } = auth;
+
+
+
 const Hotelregister = () => {
-  const { auth } = useSelector((state) => ({ ...state }));
-  const { token } = auth;
+  const history = useNavigate();
 
   const [values, setValues] = useState({
     pan_number: "",
     hotel_name: "",
     phone_number: "",
-    owner_name:"",
+    owner_name: "",
     location: "",
+    email: "",
+    password: "",
   });
 
-  const { pan_number, hotel_name, phone_number, owner_name, location } = values;
+  const {
+    pan_number,
+    hotel_name,
+    phone_number,
+    owner_name,
+    location,
+    email,
+    password,
+  } = values;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values)
-    let hotelData = new FormData();
-    hotelData.append("pan_number", pan_number);
-    hotelData.append("hotel_name", hotel_name);
-    hotelData.append("phone_number", phone_number);
-    hotelData.append("owner_name",owner_name)
-    hotelData.append("location", location);
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API}/register/newhotel`,
+        {
+          pan_number,
+          hotel_name,
+          phone_number,
+          owner_name,
+          location,
+          password,
+          email,
+        }
+      );
 
-    console.log("form",[...hotelData]);
-    let res = await registerHotel(token, hotelData);
-    console.log("hotel register res", res);
-    toast("new hotel is registered");
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+      console.log("register hotel===>", res);
+      toast.success("registering sucess,plase login");
+      history("/login/hotel");
+    } catch (err) {
+      console.log("server error====>", err);
+      if (err.response.status == 400) toast.error(err.response.data);
+    }
   };
 
-  //   const handleImageChange = (e) => {
-  //     setPreview(URL.createObjectURL(e.target.files[0]));
-  //     setValues({ ...values, image: e.target.files[0] });
-  //   };
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -96,15 +110,6 @@ const Hotelregister = () => {
           value={phone_number}
         ></input>
 
-        {/* <Algoliaplaces
-       className="form-control ml-2 mr-2"
-       placeholder="location"
-       defaultValues={location}
-       options={config}
-       onChange={({suggestion})=>setValues({...values,location:suggestion.value})}
-
-       style={{height:'50px'}} /> */}
-
         <input
           type="text"
           name="location"
@@ -113,8 +118,29 @@ const Hotelregister = () => {
           className="form-control m-2"
           value={location}
         ></input>
+        <input
+          type="password"
+          name="password"
+          onChange={handleChange}
+          placeholder="password"
+          className="form-control m-2"
+          value={password}
+        ></input>
+        <input
+          type="email"
+          name="email"
+          onChange={handleChange}
+          placeholder="email"
+          className="form-control m-2"
+          value={email}
+        ></input>
       </div>
       <button className="btn btn-outline-primary m-2">save</button>
+      <Link to="/register">
+        <button className="btn btn-outline-primary m-2">
+          Register as customer
+        </button>
+      </Link>
     </form>
   );
 
@@ -124,16 +150,13 @@ const Hotelregister = () => {
         <h1> Register Hotel</h1>
       </div>
       <div className="container-fluid">
-        <ProfileNav />
         <div className="row">
           <div className="col-md-10">
             <br />
             {hotelForm()}
           </div>
-          <div className="col-md-2">
-           
-            <pre>{JSON.stringify(values, null, 4)}</pre>
-          </div>
+
+          <div className="col-md-2"></div>
         </div>
       </div>
     </>

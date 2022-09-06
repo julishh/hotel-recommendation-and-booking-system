@@ -7,93 +7,85 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import "antd/dist/antd.css";
 //import { read } from "../actions/hotel";
-import axios from 'axios'
+import axios from "axios";
 
 const { Option } = Select;
 
-const EditHotel = ( ) => {
-
-  const {auth}=useSelector((state)=>({...state}))
-const {token}=auth
-
+const EditHotel = () => {
+  const { auth } = useSelector((state) => ({ ...state }));
+  const { token } = auth;
 
   const [values, setValues] = useState({
     title: "",
     content: "",
     location: "",
-   
+
     price: "",
     bed: "",
     from: "",
     to: "",
   });
 
-  const [image,setImage]=useState("")
+  const [image, setImage] = useState("");
 
-  const { title, content, location,  price, bed, from, to } = values;
+  const { title, content, location, price, bed, from, to } = values;
 
   const [preview, setPreview] = useState(
     "https:/abc.com/50x50.png?text=PREVIEW"
   );
 
-  
+  const hotelId = useParams().hotelId;
+  console.log(hotelId)
 
-  const hotelId=useParams().hotelId
-  
-   useEffect(() => {
-   
-    
-    loadSellerhotel()
-    
+  useEffect(() => {
+    loadSellerhotel();
   }, []);
 
-  const loadSellerhotel=async()=>{
-    let res=await axios.get(`${process.env.REACT_APP_API}/hotel/${hotelId}`)
+  const loadSellerhotel = async () => {
+    let res = await axios.get(`${process.env.REACT_APP_API}/hotel/${hotelId}`);
 
-    setValues({...values,...res.data})
-    setPreview(`${process.env.REACT_APP_API}/hotels/image/${res.data._id}`)
-    console.log(values)
-    
-  }
+    setValues({ ...values, ...res.data });
+    setPreview(`${process.env.REACT_APP_API}/hotels/image/${res.data._id}`);
+    console.log(values);
+  };
 
-  const updateHotel=async(data)=>{
-    
-    await axios.put(`${process.env.REACT_APP_API}/update-hotel/${hotelId}`,data,{
-      headers:{
-        Authorization: `Bearer ${token}`
+  const updateHotel = async (data) => {
+    await axios.put(
+      `${process.env.REACT_APP_API}/update-hotel/${hotelId}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    })
-
-  }
+    );
+  };
 
   const handleImageChange = (e) => {
     setPreview(URL.createObjectURL(e.target.files[0]));
     setImage(e.target.files[0]);
   };
-  const handleSubmit=async(e)=>{
-
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     //console.log(values)
-  let hotelData=new FormData()
-  hotelData.append("title",title);
-  hotelData.append("content",content);
-  hotelData.append("location",location);
-  hotelData.append("price",price);
-  hotelData.append("bed",bed);
-  hotelData.append("from",from);
-  hotelData.append("to",to);
-  image && hotelData.append("image",image);
+    let hotelData = new FormData();
+    hotelData.append("title", title);
+    hotelData.append("content", content);
+    hotelData.append("location", location);
+    hotelData.append("price", price);
+    hotelData.append("bed", bed);
+    hotelData.append("from", from);
+    hotelData.append("to", to);
+    image && hotelData.append("image", image);
 
-  try{
-    let res= await updateHotel(hotelData)
-    console.log('hotel update response',res)
+    try {
+      let res = await updateHotel(hotelData);
+      console.log("hotel update response", res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  }catch(err){
-    console.log(err)
-  }
-  }
-
-  
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -107,7 +99,6 @@ const {token}=auth
             name="image"
             onChange={handleImageChange}
             accept="image/*"
-            
             hidden
           ></input>
         </label>
@@ -171,41 +162,41 @@ const {token}=auth
           <Option key={2}>{2}</Option>
           <Option key={3}>{3}</Option>
         </Select>
-      {from && <DatePicker
-        defaultValue={moment(from,"YYYY-MM-DD")}
-          placeholder="from date"
-          className="form-control m-2"
-          onChange={(date, dateString) =>
-            setValues({ ...values, from: dateString })
-          }
-          disabledDate={(current) =>
-            current && current.valueOf() < moment().subtract(1, "days")
-          }
-        />}
-        {to && <DatePicker
-        defaultValue={moment(to,"YYYY-MM-DD")}
-          placeholder="to date"
-          className="form-control m-2"
-          onChange={(date, dateString) =>
-            setValues({ ...values, to: dateString })
-          }
-          disabledDate=
-        {(current) =>
-          current && current.valueOf() < moment().subtract(1, "days")
-        }
-        />}
-        
+        {from && (
+          <DatePicker
+            defaultValue={moment(from, "YYYY-MM-DD")}
+            placeholder="from date"
+            className="form-control m-2"
+            onChange={(date, dateString) =>
+              setValues({ ...values, from: dateString })
+            }
+            disabledDate={(current) =>
+              current && current.valueOf() < moment().subtract(1, "days")
+            }
+          />
+        )}
+        {to && (
+          <DatePicker
+            defaultValue={moment(to, "YYYY-MM-DD")}
+            placeholder="to date"
+            className="form-control m-2"
+            onChange={(date, dateString) =>
+              setValues({ ...values, to: dateString })
+            }
+            disabledDate={(current) =>
+              current && current.valueOf() < moment().subtract(1, "days")
+            }
+          />
+        )}
       </div>
       <button className="btn btn-outline-primary m-2">save</button>
     </form>
   );
-  
 
   return (
     <>
       <div className="container-fluid navimage p-5 text-center">
         <h1> Edit Hotel</h1>
-        
       </div>
       <div className="container-fluid">
         <div className="row">

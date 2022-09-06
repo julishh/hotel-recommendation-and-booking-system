@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { toast } from 'react-toastify';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 
 
 import axios from 'axios'
@@ -73,6 +73,8 @@ const Register = () => {
           ></input>
         </div>
         <button disabled={!name ||!email || !password} className="btn btn-primary"> submit</button>
+        <Link to='/register/hotel'><button className="btn btn-outline-primary m-2" >Register as Hotel</button>
+      </Link>
       </form>
     );
   };

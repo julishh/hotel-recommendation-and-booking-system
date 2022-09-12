@@ -71,4 +71,6 @@ userSchema.methods.comparePassword=function(password,next){
 }
 
 
+
+
 module.exports=mongoose.model("User",userSchema)

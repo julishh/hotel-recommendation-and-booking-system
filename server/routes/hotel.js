@@ -6,6 +6,7 @@ const router = express.Router();
 
 const seller=require('../controllers/seller')
 const func=require('../controllers/hotel')
+const cProfile=require('../controllers/customerProfile')
 
 router.post("/create-hotel",requireSignin,formidable(),func.createHotel)
 router.post("/register-hotel",requireSignin,formidable(),func.registerHotel)
@@ -19,4 +20,6 @@ router.get('/hotel/:hotelId', func.read)
 router.get('/sellerinfo',requireSignin,seller.sellerInfo)
 router.put('/update-hotel/:hotelId',requireSignin, formidable(),func.update)
 router.post('/search-listings',func.searchListing)
+
+router.get('/user/:userId',cProfile.userInfo)
 module.exports=router

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+//import '../auth/Login.css'
 const NavigationBar = () => {
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => ({ ...state }));
@@ -18,7 +18,13 @@ const NavigationBar = () => {
   };
 
   return (
-    <div className="nav  bg-light d-flex justify-content-end ">
+
+    <>
+    
+    <div className="navbar  bg-light d-flex justify-content-end  " style={{fontSize: "25px"}}>
+       
+
+        
       {auth !== null && auth.user.seller == false && (
         <Link className="nav-link" to="/">
           Home
@@ -62,6 +68,7 @@ const NavigationBar = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 

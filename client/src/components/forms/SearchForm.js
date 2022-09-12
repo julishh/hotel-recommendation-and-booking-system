@@ -22,15 +22,15 @@ const SearchForm = () => {
   };
 
   return (
-    <div className="d-flex pb-4">
-      <div className="w-100">
+    <div className="d-flex pb-4 ">
+      <div className="w-100 ">
         <input
-          type="text"
+          type="input"
           name="location"
           onChange={(e) => setLocation(e.target.value)}
+          className="form-control bg-light text-dark "
           placeholder="Location"
-          className="form-control "
-          style={{height:"50px"}}
+          style={{height:"50px" ,borderRadius:"0"}}
         ></input>
          </div>
         <RangePicker

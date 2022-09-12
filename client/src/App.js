@@ -1,4 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UserAuthContextProvider } from "./context/UserAuthContext";
+
+
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,17 +24,26 @@ import HotelLogin from "./auth/HotelLogin";
 import Ownerdashboard from "./hotelowner/Ownerdashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import SearchResult from "./hotels/SearchResult";
+
+import Details from "./components/booking/Details";
+import PayOnArrival from "./components/booking/PayOnArrival";
+import PayViaKhalti from "./components/booking/PayViaKhalti";
 function App() {
   return (
     <BrowserRouter>
+    <UserAuthContextProvider>
       <NavigationBar />
       <ToastContainer position="bottom-center"></ToastContainer>
       <Routes>
-        <Route exact path='/hotel/:h_id' element={<DisplaySingleHotel />}></Route>
+        <Route
+          exact
+          path="/hotel/:h_id"
+          element={<DisplaySingleHotel />}
+        ></Route>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/login/hotel" element={<HotelLogin />} />
-        
+
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/register/hotel" element={<Hotelregister />} />
 
@@ -73,6 +85,36 @@ function App() {
           }
         />
 
+        <Route
+          exact
+          path="/continue-booking/:hotelId"
+          element={
+            <PrivateRoute>
+              <Details />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/confirmation/:hotelId"
+          element={
+            <PrivateRoute>
+              <PayOnArrival />
+            </PrivateRoute>
+          }
+        />
+
+<Route
+          exact
+          path="/khalti"
+          element={
+            <PrivateRoute>
+              <PayViaKhalti />
+            </PrivateRoute>
+          }
+        />
+        
+
         {/* <Route
           exact
           path="/newhotel/register"
@@ -82,7 +124,7 @@ function App() {
             </PrivateRoute>
           }
         /> */}
-       <Route
+        <Route
           exact
           path="/checkseller"
           element={
@@ -92,20 +134,19 @@ function App() {
           }
         />
 
-<Route
+        <Route
           exact
           path="/owner/dashboard"
           element={
             <PrivateRoute>
-              <Ownerdashboard/>
+              <Ownerdashboard />
             </PrivateRoute>
           }
         />
-        
 
-<Route exact path="/search-result" element={<SearchResult />} />
-
+        <Route exact path="/search-result" element={<SearchResult />} />
       </Routes>
+      </UserAuthContextProvider>
     </BrowserRouter>
   );
 }

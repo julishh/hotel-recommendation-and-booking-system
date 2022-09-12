@@ -17,12 +17,7 @@ const registeredHotelSchema = new Schema(
       required: "Hotel Name is required",
       
     },
-    pan_number: {
-      type: Number,
-      trim: true,
-      required: "Pan number  is required",
-      unique: true,
-    },
+    
     phone_number: {
       type: Number,
       trim: true,
@@ -52,6 +47,11 @@ const registeredHotelSchema = new Schema(
       type:Boolean,
       default:true,
   },
+
+  hotels:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Hotel",
+  }]
 
   },
   { timestamps: true }

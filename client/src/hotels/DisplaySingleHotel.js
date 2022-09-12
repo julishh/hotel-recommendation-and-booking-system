@@ -13,7 +13,6 @@ const DisplaySingleHotel = () => {
 
   const [hotel, setHotel] = useState({});
   const [image, setImage] = useState("");
-  
 
   useEffect(() => {
     loadSellerhotel();
@@ -26,8 +25,6 @@ const DisplaySingleHotel = () => {
     setImage(`${process.env.REACT_APP_API}/hotels/image/${res.data._id}`);
     console.log(hotel);
   };
-
- 
 
   const getSessionId = async (token, hotelId) => {
     await axios.post(
@@ -48,18 +45,17 @@ const DisplaySingleHotel = () => {
       <div className="container-fluid navimage p-5 text-center">
         <h1>Hotel Booking App</h1>
       </div>
-      
+
       <div className="container-fluid">
-      <div>
-            <br></br>
-            <img
-              src={image}
-              alt={hotel.title}
-              className="img img-fluid m-2"
-            ></img>
-          </div>
+        <div>
+          <br></br>
+          <img
+            src={image}
+            alt={hotel.title}
+            className="img img-fluid m-2"
+          ></img>
+        </div>
         <div className="row">
-          
           <div className="col-md-6">
             <br></br>
             <h1>{hotel.title}</h1>
@@ -68,14 +64,10 @@ const DisplaySingleHotel = () => {
             <h4>Location</h4>
             <p className="alert alert-info">{hotel.location}</p>
             <b>{hotel.content}</b>
-
-            
-            
-            
           </div>
 
           <div className="col-md-6 ">
-            <PaymentInfo price={hotel.price} />
+            <PaymentInfo price={hotel.price} hotelId={hotelId} />
           </div>
         </div>
       </div>

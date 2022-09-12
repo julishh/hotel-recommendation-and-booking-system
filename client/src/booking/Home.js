@@ -18,7 +18,7 @@ const Home = () => {
   };
   return (
     <>
-      <div className="containe-fluid p-5 bg-secondary text-center navimage">
+      <div className="containe-fluid p-5  text-center navimage">
         <h1>home</h1>
       </div>
 

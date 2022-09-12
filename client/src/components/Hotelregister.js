@@ -2,6 +2,9 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserAuth } from "../context/UserAuthContext";
+import { Form, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 import { toast } from "react-toastify";
 // //import Algoliaplaces from "algolia-places-react";
@@ -22,8 +25,11 @@ import { toast } from "react-toastify";
 const Hotelregister = () => {
   const history = useNavigate();
 
+  
+
+
   const [values, setValues] = useState({
-    pan_number: "",
+    
     hotel_name: "",
     phone_number: "",
     owner_name: "",
@@ -33,7 +39,7 @@ const Hotelregister = () => {
   });
 
   const {
-    pan_number,
+    
     hotel_name,
     phone_number,
     owner_name,
@@ -42,13 +48,50 @@ const Hotelregister = () => {
     password,
   } = values;
 
-  const handleSubmit = async (e) => {
+
+  const [otp, setOtp] = useState("");
+  const [result, setResult] = useState("");
+  const [flag, setFlag] = useState(false);
+  const { setUpRecaptha } = useUserAuth()
+  const [error, setError]=useState("")
+  
+  const getOtp = async (e) => {
     e.preventDefault();
+    console.log(phone_number);
+    setError("");
+    if (phone_number === "" || phone_number === undefined)
+      return setError("Please enter a valid phone number!");
+    try {
+      const response = await setUpRecaptha(phone_number);
+      setResult(response);
+      console.log(response)
+      setFlag(true);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const verifyOtp = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (otp === "" || otp === null) return;
+    try {
+      await result.confirm(otp);
+      handleSubmit()
+    
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+
+  const handleSubmit = async (e) => {
+    
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_API}/register/newhotel`,
         {
-          pan_number,
+          
           hotel_name,
           phone_number,
           owner_name,
@@ -72,16 +115,9 @@ const Hotelregister = () => {
   };
 
   const hotelForm = () => (
-    <form onSubmit={handleSubmit}>
+    <form >
       <div className="form-group">
-        <input
-          type="number"
-          name="pan_number"
-          onChange={handleChange}
-          placeholder="PAN Number"
-          className="form-control m-2"
-          value={pan_number}
-        ></input>
+        
 
         <input
           type="text"
@@ -135,8 +171,11 @@ const Hotelregister = () => {
           value={email}
         ></input>
       </div>
-      <button className="btn btn-outline-primary m-2">save</button>
-      <Link to="/register">
+      <div id="recaptcha-container"></div>
+            <button disabled={ !phone_number} className="btn btn-primary" onClick={getOtp}> submit</button>
+        
+
+       <Link to="/register">
         <button className="btn btn-outline-primary m-2">
           Register as customer
         </button>
@@ -156,7 +195,25 @@ const Hotelregister = () => {
             {hotelForm()}
           </div>
 
-          <div className="col-md-2"></div>
+          <Form onSubmit={verifyOtp} style={{ display: flag ? "block" : "none" }}>
+          <Form.Group className="mb-3" controlId="formBasicOtp">
+            <Form.Control
+              type="otp"
+              placeholder="Enter OTP"
+              onChange={(e) => setOtp(e.target.value)}
+            />
+          </Form.Group>
+          <div className="button-right">
+            <Link to="/">
+              <Button variant="secondary">Cancel</Button>
+            </Link>
+            &nbsp;
+            <Button type="submit" variant="primary">
+              Verify
+            </Button>
+          </div>
+        </Form>
+        
         </div>
       </div>
     </>

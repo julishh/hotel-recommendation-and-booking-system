@@ -30,7 +30,7 @@ const RoomDisplay = ({
           <div className="col-md-8">
             <div className="card-body">
               <h3 className="card-title">
-                {h.title}{" "}
+                {h.hotel_name}
                 <span className="float-right text-primary">NRS {h.price}</span>
               </h3>
               <p className="alert alert-info">{h.location}</p>

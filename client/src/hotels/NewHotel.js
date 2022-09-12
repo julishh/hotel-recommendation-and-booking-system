@@ -19,20 +19,20 @@ import { createHotel } from "../actions/hotel";
 const { Option } = Select;
 const NewHotel = () => {
 const {auth}=useSelector((state)=>({...state}))
-const {token}=auth
+const {token,user}=auth
 
   const [values, setValues] = useState({
-    title: "",
+    room_no: "",
+    bed: "",
+    max_occupancy:"",
+    price: "",
     content: "",
     location: "",
     image: "",
-    price: "",
-    bed: "",
-    from: "",
-    to: "",
+    
   });
 
-  const { title, content, location, image, price, bed, from, to } = values;
+  const { room_no, content, location, image, price, bed, max_occupancy } = values;
 
   const [preview, setPreview] = useState(
     "https:/abc.com/50x50.png?text=PREVIEW"
@@ -43,19 +43,19 @@ const {token}=auth
     e.preventDefault()
     //console.log(values)
   let hotelData=new FormData()
-  hotelData.append("title",title);
+  hotelData.append("room_no",room_no);
   hotelData.append("content",content);
   hotelData.append("location",location);
   hotelData.append("price",price);
   hotelData.append("bed",bed);
-  hotelData.append("from",from);
-  hotelData.append("to",to);
+  hotelData.append("max_occupancy",max_occupancy)
+  hotelData.append("hotel_name",user.name)
   image && hotelData.append("image",image);
 
  
   console.log([...hotelData])
   let res=await createHotel(token,hotelData)
-  console.log("hote create re",res)
+  console.log("hote create res",res)
   toast("new hotel is posted")
   setTimeout(()=>{window.location.reload()},1000)
   };
@@ -84,12 +84,12 @@ const {token}=auth
           ></input>
         </label>
         <input
-          type="text"
-          name="title"
+          type="number"
+          name="room_no"
           onChange={handleChange}
-          placeholder="Title"
+          placeholder="Room NO:"
           className="form-control m-2"
-          value={title}
+          value={room_no}
         ></input>
         <textarea
           name="content"
@@ -98,15 +98,7 @@ const {token}=auth
           className="form-control m-2"
           value={content}
         />
-        {/* <Algoliaplaces
-       className="form-control ml-2 mr-2"
-       placeholder="location"
-       defaultValues={location}
-       options={config}
-       onChange={({suggestion})=>setValues({...values,location:suggestion.value})}
-
-       style={{height:'50px'}} /> */}
-
+       
         <input
           type="text"
           name="location"
@@ -124,14 +116,7 @@ const {token}=auth
           className="form-control m-2"
           value={price}
         ></input>
-        {/* <input
-          type="number"
-          name="bed"
-          onChange={handleChange}
-          placeholder="Number of beds"
-          className="form-control m-2"
-          value={bed}
-        ></input> */}
+        
         <Select
           onChange={(value) => setValues({ ...values, bed: value })}
           className="w-100 m-2"
@@ -142,7 +127,18 @@ const {token}=auth
           <Option key={2}>{2}</Option>
           <Option key={3}>{3}</Option>
         </Select>
-        <DatePicker
+        <Select
+          onChange={(value) => setValues({ ...values, max_occupancy: value })}
+          className="w-100 m-2"
+          size="large"
+          placeholder="number of guest"
+        >
+          <Option key={1}>{1}</Option>
+          <Option key={2}>{2}</Option>
+          <Option key={3}>{3}</Option>
+        </Select>
+
+        {/* <DatePicker
           placeholder="from date"
           className="form-control m-2"
           onChange={(date, dateString) =>
@@ -162,7 +158,7 @@ const {token}=auth
         {(current) =>
           current && current.valueOf() < moment().subtract(1, "days")
         }
-        />
+        /> */}
         
       </div>
       <button className="btn btn-outline-primary m-2">save</button>

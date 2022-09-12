@@ -1,21 +1,37 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const { ObjectId } = mongoose.Schema;
+const  RegisteredHotel=require('./registeredHotels')
 
 const hotelSchema = new Schema(
   {
-    title: {
-      type: String,
-      required: "tiltle is require",
+    hotel_name:{type:String,
+      required:'name is required'
+    },
+    room_no: {
+      type: Number,
+      required: "room number is require",
     },
     content: {
       type: String,
       required: "content is require",
       maxlength: 500,
     },
-    location: {
-      type: String,
+    adress:{
+      type:String,
     },
+    location: {
+      type: {
+          type: String,
+          enum: ['Point']
+      },
+      coordinates: {
+          type: [Number],
+          index: '2dsphere'
+      },
+      readableAddress: String
+  },
+    
     price: {
       type: Number,
       required: "price is require",
@@ -29,21 +45,21 @@ const hotelSchema = new Schema(
       data: Buffer,
       contentType: String,
     },
-    from: {
-      type: Date,
-    },
-    to: {
-      type: Date,
-    },
+    
     bed: {
       type: Number,
     },
-    isbooked:{
+    max_occupancy: {
+      type: Number,
+    },
+    isavailable:{
       type: Boolean,
         default: false
     },
   },
   { timestamps: true }
 );
+
+
 
 module.exports= mongoose.model("Hotel", hotelSchema);

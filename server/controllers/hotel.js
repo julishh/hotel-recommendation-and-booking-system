@@ -11,9 +11,14 @@ const createHotel = async (req, res) => {
     let fields = req.fields;
     let files = req.files;
     console.log(files.image.contentType);
+    console.log(fields)
 
     let hotel = new Hotel(fields);
+    let id=req.user._id
     hotel.postedBy = req.user._id;
+
+    let room=await RegisteredHotel.findByIdAndUpdate(id,{$push:{hotels:hotel._id}},{new:true})
+    
     if (files.image) {
       hotel.image.data = fs.readFileSync(files.image.path);
       hotel.image.contentType = files.image.type;
@@ -34,13 +39,14 @@ const createHotel = async (req, res) => {
 };
 
 const hotels = async (req, res) => {
+  console.log(req)
   let all = await Hotel.find({})
     .limit(24)
     .select("-image.data")
     .populate("postedBy", "_id name")
     .exec();
   let all1 = all.filter(function (item) {
-    return item.isbooked === false;
+    return item.isavailable === false;
   });
   console.log(all1);
   res.json(all1);
@@ -158,6 +164,8 @@ const searchListing = async (req, res) => {
 
   res.json(result);
 };
+
+
 
 module.exports = {
   createHotel,

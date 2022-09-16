@@ -10,12 +10,7 @@ import "antd/dist/antd.css";
 
 import { createHotel } from "../actions/hotel";
 
-// const config={
-//   appId:process.env.REACT_APP_ALGOILA_APP_ID,
-//   apiKey:process.env.REACT_APP_ALGOILA_API_KEY,
-//   language:'en',
-//   countires:[]
-// }
+
 const { Option } = Select;
 const NewHotel = () => {
 const {auth}=useSelector((state)=>({...state}))
@@ -27,12 +22,12 @@ const {token,user}=auth
     max_occupancy:"",
     price: "",
     content: "",
-    location: "",
+    address: "",
     image: "",
     
   });
 
-  const { room_no, content, location, image, price, bed, max_occupancy } = values;
+  const { room_no, content, address, image, price, bed, max_occupancy } = values;
 
   const [preview, setPreview] = useState(
     "https:/abc.com/50x50.png?text=PREVIEW"
@@ -45,7 +40,7 @@ const {token,user}=auth
   let hotelData=new FormData()
   hotelData.append("room_no",room_no);
   hotelData.append("content",content);
-  hotelData.append("location",location);
+  hotelData.append("address",address);
   hotelData.append("price",price);
   hotelData.append("bed",bed);
   hotelData.append("max_occupancy",max_occupancy)
@@ -101,11 +96,11 @@ const {token,user}=auth
        
         <input
           type="text"
-          name="location"
+          name="address"
           onChange={handleChange}
-          placeholder="location"
+          placeholder="adress"
           className="form-control m-2"
-          value={location}
+          value={address}
         ></input>
 
         <input
@@ -161,7 +156,7 @@ const {token,user}=auth
         /> */}
         
       </div>
-      <button className="btn btn-outline-primary m-2">save</button>
+      <button className="btn btn-success w-50 m-2">save</button>
     </form>
   );
 

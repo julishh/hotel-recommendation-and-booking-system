@@ -2,13 +2,21 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import queryString from "query-string";
+import axios from 'axios'
+import {toast} from "react-toastify"
+import { useSelector } from "react-redux";
 
 const Details = () => {
   const navigate = useNavigate();
 
-  const { date, total } = queryString.parse(window.location.search);
-  const hotelId = useParams().hotelId;
+  const {auth}=useSelector((state)=>({...state}))
+const {token,user}=auth
 
+
+  let { date, total,hotel,room_no } = queryString.parse(window.location.search);
+  
+  const hotelId = useParams().hotelId;
+  const userId=user._id
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -20,13 +28,15 @@ const Details = () => {
 
   const handleDetails = (e) => {
     e.preventDefault();
-    console.log(name, email, phone);
+    setDetailFlag(false)
     setPaymentFlag(true);
   };
 
   const confirm=(e)=>{
-    e.preventDefault();
-    navigate(`/confirmation/${hotelId}`)
+    console.log("confirm")
+   console.log(e)
+   navigate("/profile")
+    //navigate(`/confirmation/${hotelId}&detail=${e}`)
   }
 
   const khalti=(e)=>{
@@ -34,28 +44,52 @@ const Details = () => {
     navigate("/khalti")
   }
 
+  const book=async(e)=>{
+    e.preventDefault();
+    total="pay on arrival"
+    try{
+      const res=await axios.post(`${process.env.REACT_APP_API}/confirm-booking/${userId}/${hotelId}`,{
+        name,
+        email,
+        phone,
+        hotel,
+        date,
+        room_no,
+        total,
+
+      })
+      console.log("register user===>", res);
+      toast.success("booking sucess");
+      setTimeout(()=>{confirm(res.data)},1000)
+
+    }catch(err){
+      console.log("server error====>", err);
+      if (err.response.status == 400) toast.error(err.response.data);
+   
+    }
+  }
+
   const showPaymentOPtion = () => {
     return (
-      <div className="row">
-        <form>
-          <div className="mt-5">
-            <div className="form-group mb-3 ">
+      
+       
+          
+          <div className=" row d-flex justify-content-end  h4 w-50">
               <button
-                className="btn btn-primary"
-                onClick={confirm}
+                className="btn btn-success  col-md-4  w-25 mx-auto"
+                onClick={book}
               >
                 pay on arrival
               </button>
-            </div>
-            <div className="form-group mb-3 ">
-              <button className="btn btn-primary" onClick={khalti}>
+            
+            
+              <button className="btn btn-success  col-md-4  w-25 mx-auto" onClick={khalti}>
                 
                 pay via khalti
               </button>
-            </div>
-          </div>
-        </form>
-      </div>
+           </div>
+        
+      
     );
   };
 
@@ -68,7 +102,7 @@ const Details = () => {
               <label className="form-label">Name</label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control w-50"
                 placeholder="Enter Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -79,13 +113,13 @@ const Details = () => {
               <label className="form-label">Email</label>
               <input
                 type="email"
-                className="form-control"
+                className="form-control w-50"
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               ></input>
             </div>
-            <div className="form-group mb-3 ">
+            <div className="form-group mb-3 w-50">
               <label className="form-label">Phone</label>
               <input
                 type="tel"
@@ -96,14 +130,15 @@ const Details = () => {
               ></input>
             </div>
 
-            <button
+           {detaiFlag && <button
               disabled={!name || !email || !phone}
-              className="btn btn-primary"
+              className="btn btn-success"
               onClick={handleDetails}
             >
-              {" "}
+              
               submit
             </button>
+  }
           </div>
         </form>
       </>
@@ -112,13 +147,15 @@ const Details = () => {
 
   return (
     <>
-      <div className="container-fluid  p-5 text-center">
-        <h3 className="btn btn-outline-primary m-2">modify your booking</h3>
-      </div>
-      <div className="container h-100">
-        {detaiFlag && <div className=" h-50">{detailForm()}</div>}
+      
+      <div className="card mb-3 content align-center" >
+        
+        <div className="card-body">
+         <div className=" h-50">{detailForm()}</div>
+       
         {paymentflag && <div className=" h-50">{showPaymentOPtion()}</div>}
-      </div>
+        </div>
+     </div>
     </>
   );
 };

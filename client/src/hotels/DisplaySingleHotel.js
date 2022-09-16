@@ -26,51 +26,52 @@ const DisplaySingleHotel = () => {
     console.log(hotel);
   };
 
-  const getSessionId = async (token, hotelId) => {
-    await axios.post(
-      `${process.env.REACT_APP_API}/stripe-session-id`,
-      {
-        hotelId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+  const roomCard = () => {
+    return (
+      <div className="card">
+      
+        <div className="card-body">
+          <h5 className="card-title">{hotel.hotel_name}</h5>
+          <p className="alert alert-info w-50">{hotel.address}</p>
+          <p className="card-text">{hotel.content}</p>
+          <h6 className="text-muted">No. of bed: {hotel.bed}</h6>
+          <h6 className="text-muted">no.of guest: {hotel.max_occupancy}</h6>
+        </div>
+      </div>
     );
   };
-
   return (
     <>
-      <div className="container-fluid navimage p-5 text-center">
-        <h1>Hotel Booking App</h1>
-      </div>
+    <div className="row">
+    <img
+          className="card-img-top "
+          width="auto"
+          height="500"
+          src={image}
+          alt={hotel.title}
+        />
+    </div>
+      <div
+        className="row"
+        
+      >
+        <div className="col-md-7 mt-1">{roomCard()}</div>
 
-      <div className="container-fluid">
-        <div>
-          <br></br>
-          <img
-            src={image}
-            alt={hotel.title}
-            className="img img-fluid m-2"
-          ></img>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
-            <br></br>
-            <h1>{hotel.title}</h1>
-            <br />
-            <h3>Description</h3>
-            <h4>Location</h4>
-            <p className="alert alert-info">{hotel.location}</p>
-            <b>{hotel.content}</b>
-          </div>
-
-          <div className="col-md-6 ">
-            <PaymentInfo price={hotel.price} hotelId={hotelId} />
-          </div>
+        <div
+          className="col-md-5 mt-1" 
+          
+        >
+          <PaymentInfo price={hotel.price} hotelId={hotelId} hotel={hotel} />
         </div>
       </div>
+
+      {/* <div classNameName="row">
+        <div className="col-md-7 mt-1">this is it </div>
+
+          <div classNameName="col-md-4 ">
+            <PaymentInfo price={hotel.price} hotelId={hotelId} hotel={hotel} />
+          </div>
+        </div> */}
     </>
   );
 };

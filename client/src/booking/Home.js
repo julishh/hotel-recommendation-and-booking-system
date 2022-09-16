@@ -15,12 +15,11 @@ const Home = () => {
     const res = await axios.get(`${process.env.REACT_APP_API}/hotels`);
 
     setHotels(res.data);
+    
   };
   return (
     <>
-      <div className="containe-fluid p-5  text-center navimage">
-        <h1>home</h1>
-      </div>
+      
 
       <div className="col">
         <br />

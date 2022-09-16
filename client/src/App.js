@@ -28,6 +28,7 @@ import SearchResult from "./hotels/SearchResult";
 import Details from "./components/booking/Details";
 import PayOnArrival from "./components/booking/PayOnArrival";
 import PayViaKhalti from "./components/booking/PayViaKhalti";
+import EditInfo from "./user/EditInfo";
 function App() {
   return (
     <BrowserRouter>
@@ -46,6 +47,7 @@ function App() {
 
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/register/hotel" element={<Hotelregister />} />
+        <Route exact path="/profile/edit" element={<EditInfo />} />
 
         <Route
           exact

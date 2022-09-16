@@ -17,20 +17,10 @@ const hotelSchema = new Schema(
       required: "content is require",
       maxlength: 500,
     },
-    adress:{
+    address:{
       type:String,
     },
-    location: {
-      type: {
-          type: String,
-          enum: ['Point']
-      },
-      coordinates: {
-          type: [Number],
-          index: '2dsphere'
-      },
-      readableAddress: String
-  },
+    
     
     price: {
       type: Number,
@@ -56,9 +46,14 @@ const hotelSchema = new Schema(
       type: Boolean,
         default: false
     },
+
+    bookingDates:[{
+        type:Date,
+    }]
   },
   { timestamps: true }
 );
+
 
 
 

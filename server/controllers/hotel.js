@@ -4,7 +4,8 @@ const RegisteredHotel = require("../models/registeredHotels");
 const fs = require("fs");
 
 const createHotel = async (req, res) => {
-  // console.log("req fields",req.fields)
+  
+  console.log("req fields",req.fields)
   // console.log("req files",req.files)
 
   try {
@@ -63,7 +64,7 @@ const image = async (req, res) => {
 };
 
 const sellerHotels = async (req, res) => {
-  console.log("hi");
+  
   let all = await Hotel.find({ postedBy: req.user._id })
     .select("-image.data")
     .populate("postedBy", "_id name")
@@ -77,6 +78,7 @@ const read = async (req, res) => {
   let hotel = await Hotel.findById(req.params.hotelId)
     .select("-image.data")
     .exec();
+    console.log(hotel)
   res.json(hotel);
 };
 
@@ -86,9 +88,9 @@ const registerHotel = async (req, res) => {
     // console.log("req fields",req.fields.pan_number)
 
     let fields = req.fields;
-    let pan_number = fields.pan_number;
+    let email = fields.email;
     console.log(pan_number);
-    let hotelExist = await RegisteredHotel.findOne({ pan_number }).exec();
+    let hotelExist = await RegisteredHotel.findOne({ email }).exec();
     if (hotelExist) return res.status(400).send("hotel is already registered");
     let seller = await User.findById(req.user._id);
     seller.isSeller = true;

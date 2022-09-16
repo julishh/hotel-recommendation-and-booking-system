@@ -26,6 +26,20 @@ const userSchema=new Schema(
             required:"password is required",
 
         },
+        phone:{
+
+            type:Number,
+            trim:true,
+            
+
+        },
+        address:{
+
+            type:String,
+            trim:true,
+            
+
+        },
 
         isSeller:{
             type:Boolean,

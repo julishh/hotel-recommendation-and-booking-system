@@ -7,6 +7,7 @@ const RoomDisplay = ({
   owner = false,
   showMoreButton = true,
 }) => {
+  console.log(h)
   const history = useNavigate();
   return (
     <>
@@ -33,7 +34,7 @@ const RoomDisplay = ({
                 {h.hotel_name}
                 <span className="float-right text-primary">NRS {h.price}</span>
               </h3>
-              <p className="alert alert-info">{h.location}</p>
+              <p className="alert alert-info">{h.address}</p>
               <p className="card-text">{`${h.content.substring(0, 200)}...`}</p>
 
               <div className="d-flex justify-content-between h4">

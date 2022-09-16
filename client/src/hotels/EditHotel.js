@@ -16,19 +16,18 @@ const EditHotel = () => {
   const { token } = auth;
 
   const [values, setValues] = useState({
-    title: "",
-    content: "",
-    location: "",
-
-    price: "",
+    room_no: "",
     bed: "",
-    from: "",
-    to: "",
+    max_occupancy:"",
+    price: "",
+    content: "",
+    address: "",
+    image: "",
   });
 
   const [image, setImage] = useState("");
 
-  const { title, content, location, price, bed, from, to } = values;
+  const { room_no, content, address, price, bed, max_occupancy } = values;
 
   const [preview, setPreview] = useState(
     "https:/abc.com/50x50.png?text=PREVIEW"
@@ -68,21 +67,26 @@ const EditHotel = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     //console.log(values)
-    let hotelData = new FormData();
-    hotelData.append("title", title);
-    hotelData.append("content", content);
-    hotelData.append("location", location);
-    hotelData.append("price", price);
-    hotelData.append("bed", bed);
-    hotelData.append("from", from);
-    hotelData.append("to", to);
-    image && hotelData.append("image", image);
+    let hotelData=new FormData()
+  hotelData.append("room_no",room_no);
+  hotelData.append("content",content);
+  hotelData.append("address",address);
+  hotelData.append("price",price);
+  hotelData.append("bed",bed);
+  hotelData.append("max_occupancy",max_occupancy)
+  
+  image && hotelData.append("image",image);
+
+ 
 
     try {
       let res = await updateHotel(hotelData);
       console.log("hotel update response", res);
+      toast("new room is updated")
+  setTimeout(()=>{window.location.reload()},1000)
     } catch (err) {
       console.log(err);
+      
     }
   };
 
@@ -103,12 +107,12 @@ const EditHotel = () => {
           ></input>
         </label>
         <input
-          type="text"
-          name="title"
+          type="number"
+          name="room_no"
           onChange={handleChange}
-          placeholder="Title"
+          placeholder="Room NO:"
           className="form-control m-2"
-          value={title}
+          value={room_no}
         ></input>
         <textarea
           name="content"
@@ -117,22 +121,14 @@ const EditHotel = () => {
           className="form-control m-2"
           value={content}
         />
-        {/* <Algoliaplaces
-       className="form-control ml-2 mr-2"
-       placeholder="location"
-       defaultValues={location}
-       options={config}
-       onChange={({suggestion})=>setValues({...values,location:suggestion.value})}
-
-       style={{height:'50px'}} /> */}
-
+       
         <input
           type="text"
-          name="location"
+          name="address"
           onChange={handleChange}
           placeholder="location"
           className="form-control m-2"
-          value={location}
+          value={address}
         ></input>
 
         <input
@@ -143,14 +139,7 @@ const EditHotel = () => {
           className="form-control m-2"
           value={price}
         ></input>
-        {/* <input
-          type="number"
-          name="bed"
-          onChange={handleChange}
-          placeholder="Number of beds"
-          className="form-control m-2"
-          value={bed}
-        ></input> */}
+        
         <Select
           onChange={(value) => setValues({ ...values, bed: value })}
           className="w-100 m-2"
@@ -162,7 +151,19 @@ const EditHotel = () => {
           <Option key={2}>{2}</Option>
           <Option key={3}>{3}</Option>
         </Select>
-        {from && (
+
+        <Select
+          onChange={(value) => setValues({ ...values, max_occupancy: value })}
+          className="w-100 m-2"
+          size="large"
+          placeholder="number of guest"
+          value={max_occupancy}
+        >
+          <Option key={1}>{1}</Option>
+          <Option key={2}>{2}</Option>
+          <Option key={3}>{3}</Option>
+        </Select>
+        {/* {from && (
           <DatePicker
             defaultValue={moment(from, "YYYY-MM-DD")}
             placeholder="from date"
@@ -174,8 +175,8 @@ const EditHotel = () => {
               current && current.valueOf() < moment().subtract(1, "days")
             }
           />
-        )}
-        {to && (
+        )} */}
+        {/* {to && (
           <DatePicker
             defaultValue={moment(to, "YYYY-MM-DD")}
             placeholder="to date"
@@ -187,7 +188,7 @@ const EditHotel = () => {
               current && current.valueOf() < moment().subtract(1, "days")
             }
           />
-        )}
+        )} */}
       </div>
       <button className="btn btn-outline-primary m-2">save</button>
     </form>
@@ -210,7 +211,7 @@ const EditHotel = () => {
               alt="preview image"
               className="img img-fluid m-2"
             />
-            <pre>{JSON.stringify(values, null, 4)}</pre>
+            {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
           </div>
         </div>
       </div>

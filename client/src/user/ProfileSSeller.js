@@ -36,11 +36,10 @@ const ProfileSSeller = () => {
             <div className='row'>
                 <div className='col-md-10'>
                     <h2>your Hotels</h2>
-                    <h2>this is from connected function</h2>
-
+                    
                 </div>
                 <div className='col-md-2'>
-            <Link to='/hotel/new' className='btn btn-primary'> Add New</Link>
+            <Link to='/hotel/new' className='btn btn-success w-100'> Add New</Link>
         </div>
 
             </div>

@@ -40,50 +40,14 @@ const Login = () => {
       if (err.response.status == 400) toast.error(err.response.data);
     }
   };
-  // const loginForm = () => {
-  //   return (
-  //     <form onSubmit={handleSubmit} className="mt-5">
-  //       <div className="form-group mb-3">
-          // <label className="form-label">your email</label>
-          // <input
-          //   type="email"
-          //   className="form-control"
-          //   placeholder="Enter email"
-          //   value={email}
-          //   onChange={(e) => setEmail(e.target.value)}
-          // // ></input>
-  //       </div>
-
-  //       <div className="form-group mb-3 ">
-          // <label className="form-label">password</label>
-          // <input
-          //   type="password"
-          //   className="form-control"
-          //   placeholder="password"
-            // value={password}
-            // onChange={(e) => setPassword(e.target.value)}
-          // ></input>
-  //       </div>
-  //       <button disabled={!email || !password} className="btn btn-primary">
-  //         {" "}
-  //         submit
-  //       </button>
-  //       <Link to="/login/hotel">
-  //         <button className="btn btn-outline-primary m-2">
-  //           Login as Hotel
-  //         </button>
-  //       </Link>
-  //     </form>
-  //   );
-  // };
-
+  
   const loginForm = () => {
     return (
       <div className="login-body">
       <div className="login ">
         <h1 className="text-center"> Login</h1>
         <form className="needs-validation" onSubmit={handleSubmit}>
-          <div className="form-group was-validated">
+          <div className="form-group ">
             <label className="form-label">Email adress </label>
             <input
               type="email"
@@ -98,7 +62,7 @@ const Login = () => {
             <div class="inavlid-feedback">Please enter your email address</div>
           </div>
 
-          <div className="form-group was-validated">
+          <div className="form-group ">
             <label className="form-label">password</label>
             <input
               type="password"
